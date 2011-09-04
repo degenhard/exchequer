@@ -1,5 +1,20 @@
 import itertools
 
+def render_to_string(rows, header=True, outfile=None, justify=unicode.ljust, encoding='utf-8'):
+    result = ''
+    first_pass, second_pass = itertools.tee(ensure_text(iter(rows), encoding=encoding))
+    columns = column_lengths(first_pass)
+
+    if not columns:
+        raise ValueError("Can't print an empty table")
+
+    format_row = lambda row: ' | '.join(justify(cell, length) for cell, length in zip(row, columns))
+    result += format_row(second_pass.next()).rstrip()
+    if header:
+        result += '\n' + '-+-'.join('-' * length for length in columns) + '\n'
+    for row in second_pass:
+        result += format_row(row).rstrip() + '\n'
+    return result
 
 def print_table(rows, header=True, outfile=None, justify=unicode.ljust, encoding='utf-8'):
     """
