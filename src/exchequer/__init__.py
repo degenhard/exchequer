@@ -1,3 +1,4 @@
+#encoding: utf-8
 import itertools
 
 def render_to_string(rows, header=True, outfile=None, justify=unicode.ljust, encoding='utf-8'):
@@ -66,10 +67,6 @@ def ensure_text(row_iterator, encoding='utf-8'):
     """
 
     def cell_to_unicode(cell):
-        if isinstance(cell, str):
-            return unicode(cell, encoding)
-        elif hasattr(cell, 'decode'):
-            return cell.decode(encoding)
         return unicode(cell)
 
     for row in row_iterator:
